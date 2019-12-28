@@ -2,13 +2,15 @@ pipeline {
   agent any
 
   tools {
-    maven "M3"
+    maven "apache-maven-3.6.3"
   }
 
   stages {
     stage('Build') {
-      git 'https://github.com/ajlanghorn/dvja.git'
-      sh "mvn clean package"
+      steps {
+        git 'https://github.com/ajlanghorn/dvja.git'
+        sh "mvn clean package"
+      }
     }
   }
 }
