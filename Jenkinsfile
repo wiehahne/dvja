@@ -17,5 +17,10 @@ pipeline {
         sh "aws s3 cp /var/lib/jenkins/workspace/dvja/target/dvja-1.0-SNAPSHOT.war s3://ako20-1578173747-buildartifacts-ja155umaqvzd/dvja-1.0-SNAPSHOT.war"
       }
     }
+    stage('Tidy up') {
+      steps {
+        cleanWs()
+      }
+    }
   }
 }
