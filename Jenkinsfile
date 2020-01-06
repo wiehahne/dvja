@@ -17,6 +17,15 @@ pipeline {
         sh "aws s3 cp /var/lib/jenkins/workspace/dvja/target/dvja-1.0-SNAPSHOT.war s3://ako20-1578173747-buildartifacts-ja155umaqvzd/dvja-1.0-SNAPSHOT.war"
       }
     }
+    stage('Check for vulnerabilities') {
+      steps {
+        script {
+          startZap(host: "127.0.0.1", port: 9091, timeout: 500, zapHome: "/opt/zaproxy", "sessionProxy": "/var/lib/jenkins/workspace/dvja/zap.session", allowedHosts:['github.com'])
+          sh "mvn verify -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=9091 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=9091"
+          archiveZap(failAllAlerts: 1, failHighAlerts: 0, failMediumAlerts: 0, failLowAlerts: 0, falsePositivesFilePath: "zapFalsePositives.json")
+        }
+      }
+    }
     stage('Tidy up') {
       steps {
         cleanWs()
