@@ -22,7 +22,6 @@ pipeline {
         script { startZap(host: "127.0.0.1", port: 9091, timeout: 500, zapHome: "/opt/zaproxy", "sessionPath": "/somewhere/somewhere.session", allowedHosts:['github.com']) }
         sh "mvn verify -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=9091 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=9091"
         script { archiveZap(failAllAlerts: 1, failHighAlerts: 0, failMediumAlerts: 0, failLowAlerts: 0, falsePositivesFilePath: "zapFalsePositives.json") }
-        }
       }
     }
     stage('Tidy up') {
